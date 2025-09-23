@@ -22,16 +22,43 @@ void Invert_Colors(Image& Picture)
     }
 }
 
-void Rotate_Image(Image& Picture)
+void Rotate_Image(Image& Picture , Image& Canva)
 {
-    //=============================== (IT'S FLIPPING) ====== (DELETE THIS)
-    for (int i = 0 ; i < Picture.width / 2 ; ++i)
+
+    // PICTURE HEIGHT = CANVA WIDTH AND VICE VERSA =========== (REVERSE NEEDED)
+    // ROTATE IMAGE 270 DEGREE
+    for (int i = 0 ; i < Canva.width ; ++i)
+    {
+        for (int j = 0 ; j < Canva.height ; ++j)
+        {
+            for (int k = 0 ; k < Canva.channels ; ++k)
+            {
+                Canva(i , j , k) = Picture(Canva.height - 1 - j , i , k);
+            }
+        }
+    }
+
+    // PICTURE HEIGHT = CANVA WIDTH AND VICE VERSA =========== (REVERSE NEEDED)
+    // ROTATE IMAGE 90 DEGREE
+    for (int i = 0 ; i < Canva.width ; ++i)
+    {
+        for (int j = 0 ; j < Canva.height ; ++j)
+        {
+            for (int k = 0 ; k < Picture.channels ; ++k)
+            {
+                Canva(i , j , k) = Picture(j , Canva.width - 1 - i , k);
+            }
+        }
+    }
+
+    // ROTATE 180 DEGREE
+    for (int i = 0 ; i < Picture.width ; ++i)
     {
         for (int j = 0 ; j < Picture.height ; ++j)
         {
             for (int k = 0 ; k < Picture.channels ; ++k)
             {
-                swap(Picture(i , j , k) , Picture(Picture.width - 1 - i , j , k));
+                Canva(i , j , k) = Picture(Picture.width - i , Picture.height - j , k);
             }
         }
     }
@@ -88,9 +115,7 @@ void Blurring_Image(Image& Picture , Image& Canva)
 int main()
 {
     Image Photo;
-    Photo.loadNewImage("building.jpg");
-    Image Photo2(Photo.width , Photo.height);
-    Blurring_Image(Photo , Photo2);
-
+    Photo.loadNewImage("short_toy.png");
+    Image Photo2(Photo.height , Photo.width);
     Photo2.saveImage("me.jpg");
 }
