@@ -1,121 +1,61 @@
 #include "Image_Class.h"
+#include <iostream>
 using namespace std;
-
-void Invert_Colors(Image& Picture)
-{
-    // Invert Each Pixel's Color In Their Own Channel
-    for (int i = 0 ; i < Picture.width ; ++i)
-    {
-        for (int j = 0 ; j < Picture.height ; ++j)
-        {
-            for (int k = 0 ; k < Picture.channels ; ++k)
-            {
-                unsigned int value = Picture.getPixel(i , j , k);
-                value = 255 - value;
-
-                if (value > 255)
-                    value = 255;
-
-                Picture(i , j , k) = value;
+void black_AND_white() {
+    Image image("building.jpg");
+    for(int i=0;i<image.width;i++) {
+        for(int j=0;j<image.height;j++) {
+            unsigned int avg =0;
+            for(int k=0;k<3;k++) {
+                avg+=image(i,j,k);
+            }
+            avg/=3;
+            if(avg<=128){avg=0;}
+            else {
+                avg=255;
+            }
+            for(int k=0;k<3;k++) {
+                image(i,j,k)=avg;
             }
         }
     }
+    image.saveImage("building_black_and_white.png");
 }
 
-void Rotate_Image(Image& Picture , Image& Canva)
-{
-
-    // PICTURE HEIGHT = CANVA WIDTH AND VICE VERSA =========== (REVERSE NEEDED)
-    // ROTATE IMAGE 270 DEGREE
-    for (int i = 0 ; i < Canva.width ; ++i)
-    {
-        for (int j = 0 ; j < Canva.height ; ++j)
-        {
-            for (int k = 0 ; k < Canva.channels ; ++k)
-            {
-                Canva(i , j , k) = Picture(Canva.height - 1 - j , i , k);
+void flip() {
+    Image image("arrow.jpg");
+    cout<<"press h for horizontal flip or v for vertical flip\n";
+    char flip_kind;
+    cin>>flip_kind;
+    if(flip_kind=='h') {
+        for(int i=0;i<image.width/2;i++) {
+            for(int j=0;j<image.height;j++) {
+                for(int k=0;k<3;k++) {
+                    int temp;
+                    temp=image(i,j,k);
+                    image(i,j,k)=image(image.width-i-1,j,k);
+                    image(image.width-i-1,j,k)=temp;
+                }
             }
         }
     }
-
-    // PICTURE HEIGHT = CANVA WIDTH AND VICE VERSA =========== (REVERSE NEEDED)
-    // ROTATE IMAGE 90 DEGREE
-    for (int i = 0 ; i < Canva.width ; ++i)
-    {
-        for (int j = 0 ; j < Canva.height ; ++j)
-        {
-            for (int k = 0 ; k < Picture.channels ; ++k)
-            {
-                Canva(i , j , k) = Picture(j , Canva.width - 1 - i , k);
+    else{
+        for(int i=0;i<image.width;i++) {
+            for(int j=0;j<image.height/2;j++) {
+                for(int k=0;k<3;k++) {
+                    int temp;
+                    temp=image(i,j,k);
+                    image(i,j,k)=image(i,image.height-j-1,k);
+                    image(i,image.height-j-1,k)=temp;
+                }
             }
         }
     }
-
-    // ROTATE 180 DEGREE
-    for (int i = 0 ; i < Picture.width ; ++i)
-    {
-        for (int j = 0 ; j < Picture.height ; ++j)
-        {
-            for (int k = 0 ; k < Picture.channels ; ++k)
-            {
-                Canva(i , j , k) = Picture(Picture.width - i , Picture.height - j , k);
-            }
-        }
-    }
+    image.saveImage("arrow_fliped.png");
+    cout<<"done";
 }
 
-void Adding_Frame(Image& Picture , Image& Canva)
-{
-    // CREATE ANOTHER OBJECT WHICH IS LARGER BY NEARLY 60 - 80 ============== (DELETE THIS)
-    // Fill The Empty Canva With Color
-    for (int i = 0 ; i < Canva.width ; ++i)
-    {
-        for (int j = 0 ; j < Canva.height ; ++j)
-        {
-            for (int k = 0 ; k < Canva.channels ; ++k)
-            {
-                Canva(i , j , k) = 255;
-            }
-        }
-    }
-
-    // Copy Our Photo's Pixels Inside The Solid Color Canva
-    // IT HAS A PROBLEM IT EATS UP THE LEFT ASPECT OF THE IMAGE =============== (DELETE THIS)
-    for (int i = 80 ; i < Picture.width ; ++i)
-    {
-        for (int j = 80 ; j < Picture.height ; ++j)
-        {
-            for (int k = 0 ; k < Picture.channels ; ++k)
-            {
-                Canva(i , j , k) = Picture(i , j , k);
-            }
-        }
-    }
-}
-
-void Blurring_Image(Image& Picture , Image& Canva)
-{
-    unsigned int avg = 0;
-    for (int i = 0 ; i < Picture.width ; ++i)
-        {
-        unsigned int sum = 0;
-
-        for (int j = 0 ; j < Picture.height ; ++j)
-        {
-            for (int k = 0 ; k < Picture.channels ; ++k)
-            {
-                sum += Picture(i , j , k);
-                Canva(i , j , k) = avg;
-            }
-        }
-        avg = sum / Picture.height;
-    }
-}
-
-int main()
-{
-    Image Photo;
-    Photo.loadNewImage("short_toy.png");
-    Image Photo2(Photo.height , Photo.width);
-    Photo2.saveImage("me.jpg");
+int main() {
+flip();
+    return 0;
 }
