@@ -2,13 +2,135 @@
 #include <filesystem>
 using namespace std;
 
-bool Valid_Name(string Picture_Name)
+int Valid_Extension(string& File_Name)
+{
+    string Valid_Extensions[4] = {"jpg" , "jpeg" , "bmp" , "png"};
+    int Dot_Position = File_Name.find('.');
+
+    if (Dot_Position == -1)
+    {
+        return -1;
+    }
+
+    string Given_Extension = File_Name.substr(Dot_Position + 1);
+
+    string Lower_Given_Extension;
+    for (int i = 0 ; i < Given_Extension.size() ; ++i)
+    {
+        Lower_Given_Extension += char(tolower(Given_Extension[i]));
+    }
+
+    for (int i = 0 ; i < 4 ; ++i)
+    {
+        if (Lower_Given_Extension == Valid_Extensions[i])
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void Save_Image(Image& Picture, string& Image_Name , string& Save_Name)
+{
+    Save_Label:
+    unsigned int option;
+    cout << "1. Save On The Same File (Replace)" << '\n';
+    cout << "2. Save On New File" << '\n';
+    cin >> option;
+
+    switch(option)
+    {
+        case 1:
+            Picture.saveImage(Image_Name);
+        break;
+        case 2:
+            cout << "Enter File Name\n";
+            while (true)
+            {
+                cin >> Save_Name;
+                if (Valid_Extension(Save_Name) == -1)
+                {
+                    cout << "Please Specify The Image Extension\n";
+                }
+                else if (Valid_Extension(Save_Name) == 0 )
+                {
+                    cout << "Invalid Extension Try Again\n";
+                }
+                else
+                    break;
+            }
+            Picture.saveImage(Save_Name);
+        break;
+        default:
+            cout << "This Is Not A Valid Option Try Again\n";
+            goto Save_Label;
+    }
+}
+
+void Save_Confirmation(Image& Picture, string& Image_Name, string& Save_Name)
+{
+    int option;
+    cout << "1. Save Current Image\n";
+    cout << "2. Continue Without Saving\n";
+
+    cin >> option;
+    switch (option)
+    {
+        case 1:
+            Save_Image(Picture, Image_Name, Save_Name);
+        break;
+        case 2:
+            break;
+        default:
+            cout << "Invalid Option Try Again\n";
+    }
+}
+
+bool File_Exists(string& Picture_Name)
 {
     if (filesystem::exists(Picture_Name))
     {
         return true;
     }
     return false;
+}
+
+bool Check_Image_Validation(string& To_Check)
+{
+        if (File_Exists(To_Check))
+        {
+            return true;
+        }
+
+        if (!Valid_Extension(To_Check))
+        {
+            cout << "Invalid Extension Try Again\n";
+            cout << "Usable Extensions: jpg, jpeg, png, bmp\n";
+            return false;
+        }
+
+        if (Valid_Extension(To_Check) == -1)
+        {
+            cout << "Please Specify The Image Extension\n";
+            return false;
+        }
+
+        cout << "Invalid Image Name Try Again\n";
+    return false;
+}
+
+void Load_Image(Image& Picture, string& Image_Name)
+{
+    while (true)
+    {
+        cout << "Enter The Image Filename (e.g. luffy.jpg)\n";
+        cin >> Image_Name;
+        if (Check_Image_Validation(Image_Name))
+        {
+            break;
+        }
+    }
+    Picture.loadNewImage(Image_Name);
 }
 
 void Invert_Colors(Image& Picture)
@@ -32,49 +154,99 @@ void Invert_Colors(Image& Picture)
     }
 }
 
-void Rotate_Image(Image& Picture , Image& Canva)
+void Rotate_Image(Image& Picture)
 {
+    unsigned int option;
+    cout << "1.Rotate 90 Degree" << '\n';
+    cout << "2.Rotate 180 Degree" << '\n';
+    cout << "3.Rotate 270 Degree" << '\n';
+    cin >> option;
 
-    // PICTURE HEIGHT = CANVA WIDTH AND VICE VERSA =========== (REVERSE NEEDED)
-    // ROTATE IMAGE 270 DEGREE
-    for (int i = 0 ; i < Canva.width ; ++i)
-    {
-        for (int j = 0 ; j < Canva.height ; ++j)
-        {
-            for (int k = 0 ; k < Canva.channels ; ++k)
-            {
-                Canva(i , j , k) = Picture(Canva.height - 1 - j , i , k);
-            }
-        }
-    }
-
-    // PICTURE HEIGHT = CANVA WIDTH AND VICE VERSA =========== (REVERSE NEEDED)
     // ROTATE IMAGE 90 DEGREE
-    for (int i = 0 ; i < Canva.width ; ++i)
+    if (option == 1)
     {
-        for (int j = 0 ; j < Canva.height ; ++j)
+        Image Canva(Picture.height , Picture.width);
+        for (int i = 0; i < Canva.width; ++i)
         {
-            for (int k = 0 ; k < Picture.channels ; ++k)
+            for (int j = 0; j < Canva.height; ++j)
             {
-                Canva(i , j , k) = Picture(j , Canva.width - 1 - i , k);
+                for (int k = 0; k < Picture.channels; ++k)
+                {
+                    Canva(i, j, k) = Picture(j, Canva.width - 1 - i, k);
+                }
+            }
+        }
+
+        swap(Picture.width , Picture.height);
+        for (int i = 0 ; i < Picture.width ; ++i)
+        {
+            for (int j = 0 ; j < Picture.height ; ++j)
+            {
+                for (int k = 0 ; k < Picture.channels ; ++k)
+                {
+                    Picture(i , j , k) = Canva(i , j , k);
+                }
             }
         }
     }
 
-    // ROTATE 180 DEGREE
-    for (int i = 0 ; i < Picture.width ; ++i)
+    else if (option == 2)
     {
-        for (int j = 0 ; j < Picture.height ; ++j)
+        Image Canva(Picture.width , Picture.height);
+        // ROTATE 180 DEGREE
+        for (int i = 0; i < Picture.width; ++i)
         {
-            for (int k = 0 ; k < Picture.channels ; ++k)
+            for (int j = 0; j < Picture.height; ++j)
             {
-                Canva(i , j , k) = Picture(Picture.width - i , Picture.height - j , k);
+                for (int k = 0; k < Picture.channels; ++k)
+                {
+                    Canva(i, j, k) = Picture(Picture.width - i, Picture.height - j, k);
+                }
+            }
+        }
+
+        for (int i = 0 ; i < Picture.width ; ++i)
+        {
+            for (int j = 0 ; j < Picture.height ; ++j)
+            {
+                for (int k = 0 ; k < Picture.channels ; ++k)
+                {
+                    Picture(i , j , k) = Canva(i , j , k);
+                }
+            }
+        }
+    }
+
+    else if (option == 3)
+    {
+        Image Canva(Picture.height , Picture.width);
+        // ROTATE IMAGE 270 DEGREE
+        for (int i = 0; i < Canva.width; ++i)
+        {
+            for (int j = 0; j < Canva.height; ++j)
+            {
+                for (int k = 0; k < Canva.channels; ++k)
+                {
+                    Canva(i, j, k) = Picture(Canva.height - 1 - j, i, k);
+                }
+            }
+        }
+        swap(Picture.width , Picture.height);
+        for (int i = 0 ; i < Picture.width ; ++i)
+        {
+            for (int j = 0 ; j < Picture.height ; ++j)
+            {
+                for (int k = 0 ; k < Picture.channels ; ++k)
+                {
+                    Picture(i , j , k) = Canva(i , j , k);
+                }
             }
         }
     }
 }
 
-void GrayScale(Image &Picture) {
+void GrayScale(Image &Picture)
+ {
     for (int i = 0; i < Picture.width; i++) {
         for (int j = 0; j < Picture.height; j++) {
             unsigned int avg = 0;
@@ -186,96 +358,101 @@ void Flip(Image& Picture) {
     }
 }
 
-
-int main()
+ // Shows All The Filters And Apply A Change on The Image
+void Filters_List(Image& Picture)
 {
-    // NOT FINISHED YET ============================== (DELETE THIS) (MENU)
-    Image Photo; string Image_Name; string Save_Name;
-    // Image Photo2(Photo.height , Photo.width);
+    unsigned int Filter_num;
+    cout << "1. Black And White" << '\n';
+    cout << "2. Invert Colors" << '\n';
+    cout << "3. GrayScale" << '\n';
+    cout << "4. Darken And Lighten" << '\n';
+    cout << "5. Flip" << '\n';
+    cout << "6. Rotate" << '\n';
+    cin >> Filter_num;
+
+    switch (Filter_num)
+    {
+        case 1:
+            Black_and_White(Picture);
+            break;
+        case 2:
+            Invert_Colors(Picture);
+            break;
+        case 3:
+            GrayScale(Picture);
+            break;
+        case 4:
+            Darken_and_Lighten(Picture);
+            break;
+        case 5:
+            Flip(Picture);
+            break;
+        case 6:
+            Rotate_Image(Picture);
+            break;
+        default:
+            cout << "This Is Not A Valid Option Try Again\n";
+    }
+}
+
+void Menu(Image& Picture)
+{
+    string Image_Name , Save_Name;
+    bool is_Saved = true;
+
+    // Load image for the first time
+    while (true)
+    {
+        cout << "Enter The Image Filename (e.g. luffy.jpg)\n";
+        cin >> Image_Name;
+        if (Check_Image_Validation(Image_Name))
+        {
+            break;
+        }
+    }
+    Picture.loadNewImage(Image_Name);
 
     while (true)
     {
         unsigned int Option;
-        cout << "1. Load Image" << '\n';
+        cout << "1. Load New Image" << '\n';
         cout << "2. Filters" << '\n';
         cout << "3. Save Image " << '\n';
         cout << "4. Exit " << '\n';
-
         cin >> Option;
 
         switch (Option)
         {
             case 1:
-                cout << "Enter The Image Name" << '\n';
-                cin >> Image_Name;
-                if (!Valid_Name(Image_Name))
+                if (!is_Saved)
                 {
-                    cout << '\n';
-                    cout << "Image not Found\n";
+                    Save_Confirmation(Picture, Image_Name, Save_Name);
                 }
-                else
-                {
-                    Photo.loadNewImage(Image_Name);
-                }
+                Load_Image(Picture, Image_Name);
             break;
             case 2:
-                unsigned int Filter_num;
-                cout << "1.Black And White" << '\n';
-                cout << "2.Invert Colors" << '\n';
-                cout << "3.GrayScale" << '\n';
-                cout << "4.Darken And Lighten" << '\n';
-                cout << "5.Flip" << '\n';
-                cout << "6.Rotate" << '\n';
-                cin >> Filter_num;
-
-                switch (Filter_num)
-                {
-                    case 1:
-                        Black_and_White(Photo);
-                    break;
-                        case 2:
-                        Invert_Colors(Photo);
-                    break;
-                        case 3:
-                        GrayScale(Photo);
-                    break;
-                        case 4:
-                        Darken_and_Lighten(Photo);
-                    break;
-                        case 5:
-                        Flip(Photo);
-                    break;
-                        case 6:
-                        // Rotate_Image(Photo);
-                    break;
-                    default:
-                        cout << "This Is Not A Valid Option\n";
-                }
-
+                Filters_List(Picture);
+                is_Saved = false;
                 break;
             case 3:
-                unsigned int option;
-                cout << "1.Save On The Same File" << '\n';
-                cout << "2.New File" << '\n';
-                cin >> option;
-
-                if (option == 1)
-                {
-                    Photo.saveImage(Image_Name);
-                }
-                else if (option == 2)
-                {
-                    cout << "Enter File Name\n";
-                    cin >> Save_Name;
-                    Photo.saveImage(Save_Name);
-                }
-            break;
+                Save_Image(Picture, Image_Name, Save_Name);
+                is_Saved = true;
+                break;
             case 4:
+                if (!is_Saved)
+                {
+                    Save_Confirmation(Picture, Image_Name, Save_Name);
+                }
                 cout << "THANK YOU" << '\n';
-                return 0;
+                return;
             default:
-                cout << "This Is Not A Valid Option\n";
+                cout << "This Is Not A Valid Option Try Again\n";
         }
-        cout << '\n';
     }
+}
+
+int main()
+{
+    Image Photo;
+    Menu(Photo);
 }
