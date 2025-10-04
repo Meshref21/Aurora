@@ -15,10 +15,16 @@
 // Black and White/Flip
 
 
-
+#include <algorithm>
 #include "Image_Class.h"
+#include <vector>
 #include <filesystem>
 using namespace std;
+
+bool is_Valid_Pixel(Image& Picture , int i , int j)
+{
+    return i < Picture.width && i >= 0 && j < Picture.height && j >= 0;
+}
 
 int Valid_Extension(string& File_Name)
 {
@@ -55,6 +61,7 @@ void Save_Image(Image& Picture, string& Image_Name , string& Save_Name)
     cout << "1. Save On The Same File (Replace)" << '\n';
     cout << "2. Save On New File" << '\n';
     cin >> option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     switch(option)
     {
@@ -66,6 +73,7 @@ void Save_Image(Image& Picture, string& Image_Name , string& Save_Name)
             while (true)
             {
                 cin >> Save_Name;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 if (Valid_Extension(Save_Name) == -1)
                 {
                     cout << "Please Specify The Image Extension\n";
@@ -92,6 +100,7 @@ void Save_Confirmation(Image& Picture, string& Image_Name, string& Save_Name)
     cout << "2. Continue Without Saving\n";
 
     cin >> option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     switch (option)
     {
         case 1:
@@ -142,7 +151,7 @@ void Load_Image(Image& Picture, string& Image_Name)
     while (true)
     {
         cout << "Enter The Image Filename (e.g. luffy.jpg)\n";
-        cin >> Image_Name;
+        getline(cin , Image_Name);
         if (Check_Image_Validation(Image_Name))
         {
             break;
@@ -179,6 +188,7 @@ void Rotate_Image(Image& Picture)
     cout << "2.Rotate 180 Degree" << '\n';
     cout << "3.Rotate 270 Degree" << '\n';
     cin >> option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     // ROTATE IMAGE 90 DEGREE
     if (option == 1)
@@ -285,6 +295,7 @@ void Darken_and_Lighten(Image &Picture) {
     cout << "1.Darken\n";
     cout << "2.Lighten\n";
     cin >> option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (option == 1)
     {
@@ -349,6 +360,7 @@ void Flip(Image& Picture) {
     cout << "1.Flip Horizontal\n";
     cout << "2.Flip Vertical\n";
     cin>>option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     if(option == 1) {
         for(int i=0;i<Picture.width/2;i++) {
             for(int j=0;j<Picture.height;j++) {
@@ -376,17 +388,248 @@ void Flip(Image& Picture) {
     }
 }
 
+void Adding_Frame(Image& Picture)
+{
+    // cout << "1. Solid Color Frame\n";
+    // cout << "2. Fancy Frame\n";
+    // int option; cin >> option;
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    float ratio = 0.03;
+    Image Canva(Picture.width + Picture.width * ratio , Picture.height + Picture.height * ratio);
+
+    // Fill The Empty Canva With White Color
+    for (int i = 0 ; i < Canva.width ; ++i)
+    {
+        for (int j = 0 ; j < Canva.height ; ++j)
+        {
+            for (int k = 0 ; k < Canva.channels ; ++k)
+            {
+                Canva(i , j , k) = 255;
+            }
+        }
+    }
+
+    // Copy Our Photo's Pixels Inside The Solid Color Canva
+    for (int i = ratio * Picture.width ; i < Picture.width ; ++i)
+    {
+        for (int j = ratio * Picture.height ; j < Picture.height ; ++j)
+        {
+            for (int k = 0 ; k < Picture.channels ; ++k)
+            {
+                Canva(i , j , k) = Picture(i , j , k);
+            }
+        }
+    }
+    Picture = Canva;
+}
+
+void Blurring_Image(Image& Picture)
+{
+    Image Canva(Picture.width, Picture.height);
+
+    // R = 1 -- 3x3
+    // R = 2 -- 5x5
+    // R = 3 -- 7x7
+    // R = 4 -- 9x9
+    int R = 3;
+
+    for (int i = 0 ; i < Picture.width ; ++i)
+    {
+        for (int j = 0 ; j < Picture.height ; ++j)
+        {
+            for (int k = 0 ; k < Picture.channels ; ++k)
+            {
+                int sum = 0 , avg = 0 , neighbors = 0;
+                for (int dx = -R ; dx <= R ; ++dx)
+                {
+                    for (int dy = -R ; dy <= R ; ++dy)
+                    {
+                        int row = i + dx;
+                        int column = j + dy;
+                        if (is_Valid_Pixel(Picture, row, column))
+                        {
+                            sum += Picture(row, column, k);
+                            ++neighbors;
+                        }
+                    }
+                }
+                avg = sum / neighbors;
+                Canva(i, j, k) = avg;
+            }
+        }
+    }
+    Picture = Canva;
+}
+
+void Natural_Sunlight(Image& Picture)
+{
+    int Blue = 0 , Green , Red;
+    for (int i = 0 ; i < Picture.width ; ++i)
+    {
+        for (int j = 0 ; j < Picture.height ; ++j)
+        {
+            Blue = Picture(i , j , 2);
+            if (Blue > 100)
+            {
+                Picture(i , j , 2) -= 30;
+            }
+
+            Red = Picture(i , j , 0);
+            Green = Picture(i , j , 1);
+
+            if (Red < 60 && Green < 60 )
+            {
+                Picture(i , j , 0) += 20;
+                Picture(i , j , 1) += 20;
+            }
+
+            Red *= 1.10;
+            if (Red > 255)
+            {
+                Red = 255;
+            }
+            Picture(i , j , 0) = Red;
+
+            Blue *= 0.85;
+            if (Blue < 0)
+            {
+                Blue = 0;
+            }
+            Picture(i , j , 2) = Blue;
+        }
+    }
+}
+
+void Oil_Painting(Image& Picture)
+{
+    Image Canva(Picture.width , Picture.height);
+
+    for (int i = 0 ; i < Picture.width ; ++i)
+    {
+        for (int j = 0 ; j < Picture.height ; ++j)
+        {
+            for (int k = 0 ; k < Picture.channels ; ++k)
+            {
+                int freq[256] = {0};
+                int R = 2;
+                for (int dx = -R ; dx <= R ; ++dx)
+                {
+                    for (int dy = -R ; dy <= R ; ++dy)
+                    {
+                        int row = i + dx;
+                        int column = j + dy;
+                        if (is_Valid_Pixel(Picture, row, column))
+                        {
+                            int Color_Value = Picture(row, column, k);
+                            ++freq[Color_Value];
+                        }
+                    }
+                }
+
+                int best_value = 0, best_count = 0;
+                for (int q = 0 ; q < 256 ; ++q)
+                {
+                    if (freq[q] > best_count)
+                    {
+                        best_count = freq[q];
+                        best_value = q;
+                    }
+                }
+                Canva(i , j , k) = best_value;
+            }
+        }
+    }
+
+    Picture = Canva;
+}
+
+void Old_Tv(Image& Picture)
+{
+    for (int i = 0 ; i < Picture.width ; ++i)
+    {
+        for (int j = 0 ; j < Picture.height ; ++j)
+        {
+            float Red = Picture(i, j, 0);
+            float Green = Picture(i, j, 1);
+            float Blue = Picture(i, j, 2);
+
+            Red *= 1.05;
+            Green *= 0.95;
+            Blue *= 1.1;
+
+            if (Red > 255)
+                Red = 255;
+            if (Green < 0)
+                Green = 0;
+            if (Blue > 255)
+                Blue = 255;
+
+            Picture(i, j, 0) = Red;
+            Picture(i, j, 1) = Green;
+            Picture(i, j, 2) = Blue;
+        }
+    }
+}
+
+void Purple(Image& Picture)
+{
+    // EDITTTTTTTTTTTTTTTT THIS ADD LEVELS =======================
+    cout << "Choose The Level 1~5\n";
+    int option; cin >> option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    float Delta = (option / 10) + 1;
+    float green_Delta = 1 - Delta;
+
+    for (int i = 0 ; i < Picture.width ; ++i)
+    {
+        for (int j = 0 ; j < Picture.height ; ++j)
+        {
+            float Red = Picture(i, j, 0);
+            float Green = Picture(i, j, 1);
+            float Blue = Picture(i, j, 2);
+
+            Red *= 1.15;
+            Blue *= 1.15;
+            Green *= 0.85;
+
+            if (Red > 255)
+            {
+                Red = 255;
+            }
+            if (Green < 0)
+            {
+                Green = 0;
+            }
+            if (Blue > 255)
+            {
+                Blue = 255;
+            }
+            Picture(i, j, 0) = Red;
+            Picture(i, j, 1) = Green;
+            Picture(i, j, 2) = Blue;
+        }
+    }
+}
+
  // Shows All The Filters And Apply A Change on The Image
 void Filters_List(Image& Picture)
 {
     unsigned int Filter_num;
-    cout << "1. Black And White" << '\n';
-    cout << "2. Invert Colors" << '\n';
-    cout << "3. GrayScale" << '\n';
-    cout << "4. Darken And Lighten" << '\n';
-    cout << "5. Flip" << '\n';
-    cout << "6. Rotate" << '\n';
+    cout << "1.  Black And White" << '\n';
+    cout << "2.  Invert Colors" << '\n';
+    cout << "3.  GrayScale" << '\n';
+    cout << "4.  Darken And Lighten" << '\n';
+    cout << "5.  Flip" << '\n';
+    cout << "6.  Rotate" << '\n';
+    cout << "7.  Adding Frame\n";
+    cout << "8.  Blur\n";
+    cout << "9.  Natural SunLight\n";
+    cout << "10. Oil Painting\n";
+    cout << "11. Old TV\n";
+    cout << "12. Purple\n";
     cin >> Filter_num;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     switch (Filter_num)
     {
@@ -408,6 +651,24 @@ void Filters_List(Image& Picture)
         case 6:
             Rotate_Image(Picture);
             break;
+        case 7:
+            Adding_Frame(Picture);
+            break;
+        case 8:
+            Blurring_Image(Picture);
+            break;
+        case 9:
+            Natural_Sunlight(Picture);
+            break;
+        case 10:
+            Oil_Painting(Picture);
+            break;
+        case 11:
+            Old_Tv(Picture);
+            break;
+        case 12:
+            Purple(Picture);
+            break;
         default:
             cout << "This Is Not A Valid Option Try Again\n";
     }
@@ -422,7 +683,7 @@ void Menu(Image& Picture)
     while (true)
     {
         cout << "Enter The Image Filename (e.g. luffy.jpg)\n";
-        cin >> Image_Name;
+        getline(cin , Image_Name);
         if (Check_Image_Validation(Image_Name))
         {
             break;
@@ -438,6 +699,7 @@ void Menu(Image& Picture)
         cout << "3. Save Image " << '\n';
         cout << "4. Exit " << '\n';
         cin >> Option;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (Option)
         {
