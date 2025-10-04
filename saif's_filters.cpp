@@ -93,11 +93,40 @@ void Crop(Image & Picture) {
    cropped.saveImage(new_name);
 }
 
+/////////////////////////////
+void Resize(/*Image& picture*/) {
+    cout<<"Enter image name + extention\n";
+    string pic_name;
+    cin>>pic_name;
+    Image picture;
+    picture.loadNewImage(pic_name);
+    int x,y;
+    cout<<"Enter the new width of image: \n";
+    cin>>x;
+    cout<<"Enter the new height of image: \n";
+    cin>>y;
+    Image resized(x,y);
+    for(int i=0;i<resized.width;i++) {
+        for(int j=0;j<resized.height;j++) {
+            for(int k=0;k<3;k++) {
+                int newx = round(i*(picture.width/x));
+                int newy = round(j*(picture.height/y));
+                resized(i,j,k)=picture(newx,newy,k);
+            }
+        }
+    }
+    string new_name;
+    cout<<"Enter the new name: \n";
+    cin>>new_name;
+    resized.saveImage(new_name);
+
+}
+
+
 
 int main() {
-    Image picture;
-    Crop(picture);
     return 0;
 }
+
 
 
