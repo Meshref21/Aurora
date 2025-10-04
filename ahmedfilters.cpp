@@ -71,35 +71,31 @@ void Lighten (Image &picture) {
     }
 }
 
-
-//Working on Edge detecting filter
-int main() {
-    Image image("luffy.jpg");
-
-
+void edge_detecting(Image &image) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             unsigned int avg = 0;
-            for (int k = 0; k < image.channels; k++) {
+            for (int k = 0; k < 3; k++) {
                 avg += image(i, j, k);
             }
             avg /= 3;
-
-            for (int k = 0; k < image.channels; k++) {
+            for (int k = 0; k < 3; k++) {
                 image(i, j, k) = avg;
             }
         }
     }
 
-
     Image edge = image;
-    edge.channels = 1;
 
+    for (int i = 0; i < edge.width; i++) {
+        for (int j = 0; j < edge.height; j++) {
+            for (int k = 0; k < 3; k++) {
+                edge(i, j, k) = 0;
+            }
+        }
+    }
 
-    for (int i = 0; i < edge.width; i++)
-        for (int j = 0; j < edge.height; j++)
-            edge(i, j, 0) = 0;
-
+    // Sobel kernels
     int Gx[3][3] = {
         {-1, 0, 1},
         {-2, 0, 2},
@@ -107,38 +103,54 @@ int main() {
     };
     int Gy[3][3] = {
         {-1, -2, -1},
-        { 0,  0,  0},
-        { 1,  2,  1}
+        {0,  0,  0},
+        {1,  2,  1}
     };
 
-
+    // Edge detection
     for (int j = 1; j < image.height - 1; j++) {
         for (int i = 1; i < image.width - 1; i++) {
-            int sumX = 0;
-            int sumY = 0;
-
+            int sumX = 0, sumY = 0;
             for (int dj = -1; dj <= 1; dj++) {
                 for (int di = -1; di <= 1; di++) {
-                    int pxl = (int) image(i + di, j + dj, 0);
-                    int kx = Gx[dj + 1][di + 1];
-                    int ky = Gy[dj + 1][di + 1];
-                    sumX += pxl * kx;
-                    sumY += pxl * ky;
+                    int pxl = (int)image(i + di, j + dj, 0);
+                    sumX += pxl * Gx[dj + 1][di + 1];
+                    sumY += pxl * Gy[dj + 1][di + 1];
                 }
             }
+            int magnitude = (int)std::sqrt(sumX * sumX + sumY * sumY);
+            magnitude = std::min(255, std::max(0, magnitude));
 
-            int magnitude = (int)std::sqrt((double)sumX * sumX + (double)sumY * sumY);
-            if (magnitude > 255) magnitude = 255;
-            if (magnitude < 0) magnitude = 0;
+            for (int k = 0; k < 3; k++) {
+                edge(i, j, k) = 255 - magnitude;
+            }
+        }
+    }
+}
 
+void Infrared(Image &pic) {
+    for (int i = 0 ; i < pic.width ; ++i)
+    {
+        for (int j = 0 ; j < pic.height ; ++j)
+        {
+            for (int k = 0 ; k < pic.channels ; ++k)
+            {
+                unsigned int value = pic.getPixel(i , j , k);
+                value = 255 - value;
 
-            edge(i, j, 0) = 255 - (unsigned char)magnitude;
+                if (value > 255)
+                    value = 255;
+
+                pic(i , j , k) = value;
+            }
+            pic(i, j, 0) = 255;
         }
     }
 
+}
 
-    edge.saveImage("edges.jpg");
-    std::cout << "Saved edges_inverted.jpg\n";
+int main() {
+    return 0;
 }
 
 
