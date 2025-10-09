@@ -719,6 +719,7 @@ void Edge_Detector(Image &image) {
             }
         }
     }
+    image = edge;
 }
 
 void Infrared(Image &pic) {
@@ -742,21 +743,22 @@ void Infrared(Image &pic) {
 
 }
 
-void Red_Detector(Image &pic) {
+void RedDetecting(Image &pic) {
     for (int i = 0; i < pic.width; i++) {
         for (int j = 0; j < pic.height; j++) {
             int R = pic(i, j, 0);
             int G = pic(i, j, 1);
             int B = pic(i, j, 2);
-
+            
             if (R > 150 && R > G * 2 && R > B * 2) {
                 pic(i, j, 0) = R;
                 pic(i, j, 1) = G;
                 pic(i, j, 2) = B;
             } else {
-                pic(i, j, 0) = 0;
-                pic(i, j, 1) = 0;
-                pic(i, j, 2) = 0;
+                unsigned int avg = (R + G + B) / 3;
+                pic(i, j, 0) = avg;
+                pic(i, j, 1) = avg;
+                pic(i, j, 2) = avg;
             }
         }
     }
