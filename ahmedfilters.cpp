@@ -161,9 +161,10 @@ void RedDetecting(Image &pic) {
                 pic(i, j, 1) = G;
                 pic(i, j, 2) = B;
             } else {
-                pic(i, j, 0) = 0;
-                pic(i, j, 1) = 0;
-                pic(i, j, 2) = 0;
+                unsigned int avg = (R + G + B) / 3;
+                pic(i, j, 0) = avg;
+                pic(i, j, 1) = avg;
+                pic(i, j, 2) = avg;
             }
         }
     }
