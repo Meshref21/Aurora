@@ -166,6 +166,7 @@ void Load_Image(Image& Picture, string& Image_Name)
     }
     Picture.loadNewImage(Image_Name);
 }
+//===================================
 
 void Invert_Colors(Image& Picture)
 {
@@ -280,121 +281,6 @@ void Rotate_Image(Image& Picture)
     }
 }
 
-void GrayScale(Image &Picture)
- {
-    for (int i = 0; i < Picture.width; i++) {
-        for (int j = 0; j < Picture.height; j++) {
-            unsigned int avg = 0;
-            for (int k = 0; k < Picture.channels; k++) {
-                avg += Picture(i, j, k);
-            }
-            avg /= 3;
-            for (int k = 0; k < 3; k++) {
-                Picture(i, j, k) = avg;
-            }
-        }
-    }
-}
-
-void Darken_and_Lighten(Image &Picture) {
-
-    unsigned int option;
-    cout << "1.Darken\n";
-    cout << "2.Lighten\n";
-    cin >> option;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-    if (option == 1)
-    {
-        for (int i = 0; i < Picture.width; i++)
-        {
-            for (int j = 0; j < Picture.height; j++)
-            {
-                for (int k = 0; k < Picture.channels; k++)
-                {
-                    int value = Picture(i, j, k);
-                    int newVal = int(0.5 * value);
-                    if (newVal > 255) newVal = 255;
-                    if (newVal < 0) newVal = 0;
-                    Picture(i, j, k) = newVal;
-                }
-            }
-        }
-    }
-
-    else if (option == 2)
-    {
-        for (int i = 0; i < Picture.width; i++)
-        {
-            for (int j = 0; j < Picture.height; j++)
-            {
-                for (int k = 0; k < Picture.channels; k++)
-                {
-                    int value = Picture(i, j, k);
-                    int newVal = int(1.5 * value);
-                    if (newVal > 255) newVal = 255;
-                    if (newVal < 0) newVal = 0;
-                    Picture(i, j, k) = newVal;
-                }
-            }
-        }
-    }
-}
-
-void Black_and_White(Image& Picture) {
-
-    for(int i=0;i<Picture.width;i++) {
-        for(int j=0;j<Picture.height;j++) {
-            unsigned int avg =0;
-            for(int k=0;k<3;k++) {
-                avg+=Picture(i,j,k);
-            }
-            avg/=3;
-            if(avg<=128){avg=0;}
-            else {
-                avg=255;
-            }
-            for(int k=0;k<3;k++) {
-                Picture(i,j,k)=avg;
-            }
-        }
-    }
-}
-
-void Flip(Image& Picture) {
-
-    unsigned int option;
-    cout << "1.Flip Horizontal\n";
-    cout << "2.Flip Vertical\n";
-    cin>>option;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    if(option == 1) {
-        for(int i=0;i<Picture.width/2;i++) {
-            for(int j=0;j<Picture.height;j++) {
-                for(int k=0;k<3;k++) {
-                    int temp;
-                    temp=Picture(i,j,k);
-                    Picture(i,j,k)=Picture(Picture.width-i-1,j,k);
-                    Picture(Picture.width-i-1,j,k)=temp;
-                }
-            }
-        }
-    }
-    else if (option == 2)
-        {
-        for(int i=0;i<Picture.width;i++) {
-            for(int j=0;j<Picture.height/2;j++) {
-                for(int k=0;k<3;k++) {
-                    int temp;
-                    temp=Picture(i,j,k);
-                    Picture(i,j,k)=Picture(i,Picture.height-j-1,k);
-                    Picture(i,Picture.height-j-1,k)=temp;
-                }
-            }
-        }
-    }
-}
-
 void Adding_Frame(Image& Picture)
 {
     // cout << "1. Solid Color Frame\n";
@@ -472,7 +358,7 @@ void Blur(Image& Picture)
                 int y2 = min(Picture.height - 1 , j + R);
 
                 long long Sum = Prefix_Color[x2][y2] - Prefix_Color[x1][y2] -
-                    Prefix_Color[x2][y1] + Prefix_Color[x1][y1];
+                                Prefix_Color[x2][y1] + Prefix_Color[x1][y1];
 
                 int lower = (2 * R + 1) * (2 * R + 1);
                 long long avg = Sum / lower;
@@ -663,6 +549,88 @@ void Purple(Image& Picture)
         }
     }
 }
+//=================================
+
+void GrayScale(Image &Picture)
+ {
+    for (int i = 0; i < Picture.width; i++) {
+        for (int j = 0; j < Picture.height; j++) {
+            unsigned int avg = 0;
+            for (int k = 0; k < Picture.channels; k++) {
+                avg += Picture(i, j, k);
+            }
+            avg /= 3;
+            for (int k = 0; k < 3; k++) {
+                Picture(i, j, k) = avg;
+            }
+        }
+    }
+}
+
+void Darken_and_Lighten(Image &Picture) {
+
+    unsigned int option;
+    cout << "1.Darken\n";
+    cout << "2.Lighten\n";
+    cin >> option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (option == 1)
+    {
+        for (int i = 0; i < Picture.width; i++)
+        {
+            for (int j = 0; j < Picture.height; j++)
+            {
+                for (int k = 0; k < Picture.channels; k++)
+                {
+                    int value = Picture(i, j, k);
+                    int newVal = int(0.5 * value);
+                    if (newVal > 255) newVal = 255;
+                    if (newVal < 0) newVal = 0;
+                    Picture(i, j, k) = newVal;
+                }
+            }
+        }
+    }
+
+    else if (option == 2)
+    {
+        for (int i = 0; i < Picture.width; i++)
+        {
+            for (int j = 0; j < Picture.height; j++)
+            {
+                for (int k = 0; k < Picture.channels; k++)
+                {
+                    int value = Picture(i, j, k);
+                    int newVal = int(1.5 * value);
+                    if (newVal > 255) newVal = 255;
+                    if (newVal < 0) newVal = 0;
+                    Picture(i, j, k) = newVal;
+                }
+            }
+        }
+    }
+}
+
+void Black_and_White(Image& Picture) {
+
+    for(int i=0;i<Picture.width;i++) {
+        for(int j=0;j<Picture.height;j++) {
+            unsigned int avg =0;
+            for(int k=0;k<3;k++) {
+                avg+=Picture(i,j,k);
+            }
+            avg/=3;
+            if(avg<=128){avg=0;}
+            else {
+                avg=255;
+            }
+            for(int k=0;k<3;k++) {
+                Picture(i,j,k)=avg;
+            }
+        }
+    }
+}
 
 void Edge_Detector(Image &image) {
     for (int i = 0; i < image.width; i++) {
@@ -750,7 +718,7 @@ void Red_Detector(Image &pic) {
             int G = pic(i, j, 1);
             int B = pic(i, j, 2);
 
-            if (R > 120 && R > G * 2 && R > B * 2) {
+            if (R > 110 && R > G * 2 && R > B * 2) {
                 pic(i, j, 0) = R;
                 pic(i, j, 1) = G;
                 pic(i, j, 2) = B;
@@ -759,6 +727,41 @@ void Red_Detector(Image &pic) {
                 pic(i, j, 0) = avg;
                 pic(i, j, 1) = avg;
                 pic(i, j, 2) = avg;
+            }
+        }
+    }
+}
+//=================================
+
+void Flip(Image& Picture) {
+
+    unsigned int option;
+    cout << "1.Flip Horizontal\n";
+    cout << "2.Flip Vertical\n";
+    cin>>option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if(option == 1) {
+        for(int i=0;i<Picture.width/2;i++) {
+            for(int j=0;j<Picture.height;j++) {
+                for(int k=0;k<3;k++) {
+                    int temp;
+                    temp=Picture(i,j,k);
+                    Picture(i,j,k)=Picture(Picture.width-i-1,j,k);
+                    Picture(Picture.width-i-1,j,k)=temp;
+                }
+            }
+        }
+    }
+    else if (option == 2)
+        {
+        for(int i=0;i<Picture.width;i++) {
+            for(int j=0;j<Picture.height/2;j++) {
+                for(int k=0;k<3;k++) {
+                    int temp;
+                    temp=Picture(i,j,k);
+                    Picture(i,j,k)=Picture(i,Picture.height-j-1,k);
+                    Picture(i,Picture.height-j-1,k)=temp;
+                }
             }
         }
     }
