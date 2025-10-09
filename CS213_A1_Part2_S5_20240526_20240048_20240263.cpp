@@ -612,26 +612,6 @@ void Darken_and_Lighten(Image &Picture) {
     }
 }
 
-void Black_and_White(Image& Picture) {
-
-    for(int i=0;i<Picture.width;i++) {
-        for(int j=0;j<Picture.height;j++) {
-            unsigned int avg =0;
-            for(int k=0;k<3;k++) {
-                avg+=Picture(i,j,k);
-            }
-            avg/=3;
-            if(avg<=128){avg=0;}
-            else {
-                avg=255;
-            }
-            for(int k=0;k<3;k++) {
-                Picture(i,j,k)=avg;
-            }
-        }
-    }
-}
-
 void Edge_Detector(Image &image) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -711,6 +691,29 @@ void Infrared(Image &pic) {
 
 }
 
+void Merged(Image &picture) {
+
+    Image Canva;
+    string Save_Name;
+    Load_Image(Canva , Save_Name);
+
+    for (int i = 0; i < picture.width; i++) {
+
+        for (int j = 0; j < picture.height; j++) {
+
+            for (int k = 0; k < picture.channels; k++) {
+                int val1 = picture(i, j, k);
+                int val2 = Canva(i, j, k);
+
+                float alpha = 0.5;
+                int newVal = int(alpha * val1 + (1 - alpha) * val2);
+
+                picture(i, j, k) = newVal;
+            }
+        }
+    }
+}
+
 void Red_Detector(Image &pic) {
     for (int i = 0; i < pic.width; i++) {
         for (int j = 0; j < pic.height; j++) {
@@ -731,7 +734,27 @@ void Red_Detector(Image &pic) {
         }
     }
 }
+
 //=================================
+void Black_and_White(Image& Picture) {
+
+    for(int i=0;i<Picture.width;i++) {
+        for(int j=0;j<Picture.height;j++) {
+            unsigned int avg =0;
+            for(int k=0;k<3;k++) {
+                avg+=Picture(i,j,k);
+            }
+            avg/=3;
+            if(avg<=128){avg=0;}
+            else {
+                avg=255;
+            }
+            for(int k=0;k<3;k++) {
+                Picture(i,j,k)=avg;
+            }
+        }
+    }
+}
 
 void Flip(Image& Picture) {
 
@@ -762,29 +785,6 @@ void Flip(Image& Picture) {
                     Picture(i,j,k)=Picture(i,Picture.height-j-1,k);
                     Picture(i,Picture.height-j-1,k)=temp;
                 }
-            }
-        }
-    }
-}
-
-void Merged(Image &picture) {
-
-    Image Canva;
-    string Save_Name;
-    Load_Image(Canva , Save_Name);
-
-    for (int i = 0; i < picture.width; i++) {
-
-        for (int j = 0; j < picture.height; j++) {
-
-            for (int k = 0; k < picture.channels; k++) {
-                int val1 = picture(i, j, k);
-                int val2 = Canva(i, j, k);
-
-                float alpha = 0.5;
-                int newVal = int(alpha * val1 + (1 - alpha) * val2);
-
-                picture(i, j, k) = newVal;
             }
         }
     }
