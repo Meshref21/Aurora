@@ -1,6 +1,6 @@
 // Github repo : https://github.com/Meshref21/photoeditor
 // Document : https://drive.google.com/file/d/15pdmZmUyn7E51XLWCQk3qjCBKExxXKL9/view
-// Explaintion Video :
+// Video :
 
 // Mohamed Mahmoud
 // id : 20240526
@@ -25,6 +25,7 @@
 #include <filesystem>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 using namespace std;
 
 bool is_Valid_Pixel(Image& Picture , int i , int j)
@@ -821,49 +822,38 @@ void Crop(Image & Picture) {
     cropped.saveImage(new_name);
 }
 
-void Resize() {
-    cout<<"Enter image name + extention\n";
-    string pic_name;
-    cin>>pic_name;
-    Image picture;
-    picture.loadNewImage(pic_name);
+void Resize(Image& Picture) {
+
     int x,y;
-    cout<<"Enter the new width of image: \n";
+    cout<<"Enter The New Width Of Image: \n";
     cin>>x;
-    cout<<"Enter the new height of image: \n";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout<<"Enter The New Height Of Image: \n";
     cin>>y;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     Image resized(x,y);
+
     for(int i=0;i<resized.width;i++) {
         for(int j=0;j<resized.height;j++) {
             for(int k=0;k<3;k++) {
-                int newx = round(i*(picture.width/x));
-                int newy = round(j*(picture.height/y));
-                resized(i,j,k)=picture(newx,newy,k);
+                int newx = round(i*(Picture.width/x));
+                int newy = round(j*(Picture.height/y));
+                resized(i,j,k)=Picture(newx,newy,k);
             }
         }
     }
-    string new_name;
-    cout<<"Enter the new name: ";
-    cin>>new_name;
-    resized.saveImage(new_name);
-
+    Picture = resized;
 }
 
-void Skew() {
-    cout << "Enter image name + extension: ";
-    string pic_name;
-    cin >> pic_name;
-
-    Image picture;
-    picture.loadNewImage(pic_name);
+void Skew(Image& Picture) {
 
     int angle;
-    cout << "Enter the angle of skewness: ";
+    cout << "Enter The Angle Of Skewness: \n";
     cin >> angle;
     double radangle = M_PI / 180.0 * angle;
-    int shift = tan(radangle) * picture.height;
-    int new_w = picture.width + abs(shift);
-    Image skewed(new_w, picture.height);
+    int shift = tan(radangle) * Picture.height;
+    int new_w = Picture.width + abs(shift);
+    Image skewed(new_w, Picture.height);
 
     for(int i=0;i<skewed.width;i++) {
 
@@ -874,58 +864,38 @@ void Skew() {
         }
     }
 
-    for(int i=0;i<picture.width;i++) {
+    for(int i=0;i<Picture.width;i++) {
 
-        for(int j=0;j<picture.height;j++) {
+        for(int j=0;j<Picture.height;j++) {
 
-            int newx = i + abs ( tan(radangle)*(picture.height-j));
+            int newx = i + abs ( tan(radangle)*(Picture.height-j));
             if (newx >= 0 && newx < new_w) {
 
                 for (int k = 0; k < 3; k++) {
-                    skewed(newx, j, k) = picture(i, j, k);
+                    skewed(newx, j, k) = Picture(i, j, k);
                 }
             }
         }
     }
-
-    string new_name;
-    cout << "Enter the new name: ";
-    cin >> new_name;
-    skewed.saveImage(new_name);
-
+    Picture = skewed;
 }
 
-void Cold() {
-    cout << "Enter image name + extension: ";
-    string pic_name;
-    cin >> pic_name;
+void Cold(Image& Picture) {
 
-    Image picture;
-    picture.loadNewImage(pic_name);
+    for(int i = 0; i < Picture.width; i++ ) {
 
-
-    for(int i = 0; i < picture.width; i++ ) {
-
-        for(int j=0 ; j < picture.height ;j++ ) {
-            if(picture(i,j,0) -25 >= 0 ){
-                picture(i,j,0) -= 25 ;
+        for(int j=0 ; j < Picture.height ;j++ ) {
+            if(Picture(i,j,0) - 25 >= 0 ){
+                Picture(i,j,0) -= 25 ;
             }
-            if(picture(i,j,1) -10 >= 0 ){
-                picture(i,j,1) -= 15;
+            if(Picture(i,j,1) - 15 >= 0 ){
+                Picture(i,j,1) -= 15;
             }
-            if(picture(i,j,2) + 30 <= 255){
-                picture(i,j,2) += 30;
+            if(Picture(i,j,2) + 30 <= 255){
+                Picture(i,j,2) += 30;
             }
-
-
         }
     }
-
-    string new_name;
-    cout << "Enter the new name: ";
-    cin >> new_name;
-    picture.saveImage(new_name);
-
 }
 
  // Shows All The Filters And Apply A Change on The Image
@@ -994,13 +964,13 @@ void Filters_List(Image& Picture)
             Purple(Picture);
             break;
         case 13:
-            Skew();
+            Skew(Picture);
             break;
         case 14:
-            Cold();
+            Cold(Picture);
             break;
         case 15:
-            Resize();
+            Resize(Picture);
             break;
         case 16:
             Crop(Picture);
