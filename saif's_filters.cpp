@@ -1,12 +1,14 @@
 #include "Image_Class.h"
+#include <cmath>
 #include <iostream>
+
 using namespace std;
 void black_AND_white() {
     Image image("building.jpg");
-    for(int i=0;i<image.width;i++) {
-        for(int j=0;j<image.height;j++) {
+    for(int i = 0; i < image.width; i++ ) {
+        for(int j = 0 ; j < image.height; j++ ) {
             unsigned int avg =0;
-            for(int k=0;k<3;k++) {
+            for(int k = 0;k < 3; k++) {
                 avg+=image(i,j,k);
             }
             avg/=3;
@@ -14,7 +16,7 @@ void black_AND_white() {
             else {
                 avg=255;
             }
-            for(int k=0;k<3;k++) {
+            for(int k=0 ; k<3; k++) {
                 image(i,j,k)=avg;
             }
         }
@@ -92,9 +94,8 @@ void Crop(Image & Picture) {
     cin>>new_name;
    cropped.saveImage(new_name);
 }
-
 /////////////////////////////
-void Resize(/*Image& picture*/) {
+void Resize() {
     cout<<"Enter image name + extention\n";
     string pic_name;
     cin>>pic_name;
@@ -116,17 +117,128 @@ void Resize(/*Image& picture*/) {
         }
     }
     string new_name;
-    cout<<"Enter the new name: \n";
+    cout<<"Enter the new name: ";
     cin>>new_name;
     resized.saveImage(new_name);
 
 }
+/////////////////////////////////////////////////
+void skew() {
+    cout << "Enter image name + extension: ";
+    string pic_name;
+    cin >> pic_name;
 
+    Image picture;
+    picture.loadNewImage(pic_name);
+
+    int angle;
+    cout << "Enter the angle of skewness: ";
+    cin >> angle;
+    double radangle = M_PI / 180.0 * angle;
+    int shift = tan(radangle) * picture.height;
+    int new_w = picture.width + abs(shift);
+    Image skewed(new_w, picture.height);
+
+    for(int i=0;i<skewed.width;i++) {
+
+        for(int j=0;j<skewed.height;j++) {
+                for (int k = 0; k < 3; k++) {
+                    skewed(i, j, k) =255;
+                }
+        }
+    }
+
+    for(int i=0;i<picture.width;i++) {
+
+        for(int j=0;j<picture.height;j++) {
+
+            int newx = i + abs ( tan(radangle)*(picture.height-j));
+            if (newx >= 0 && newx < new_w) {
+
+                for (int k = 0; k < 3; k++) {
+                    skewed(newx, j, k) = picture(i, j, k);
+                }
+            }
+        }
+    }
+
+    string new_name;
+    cout << "Enter the new name: ";
+    cin >> new_name;
+    skewed.saveImage(new_name);
+
+}
+
+///////////////////////////////////////////////////////
+void sunFixation() {
+    cout << "Enter image name + extension: ";
+    string pic_name;
+    cin >> pic_name;
+
+    Image picture;
+    picture.loadNewImage(pic_name);
+
+
+    for(int i=0;i<picture.width;i++) {
+
+        for(int j=0;j<picture.height;j++) {
+            if(picture(i,j,0) + 30 <= 255){
+            picture(i,j,0) += 30;
+            }
+            if(picture(i,j,1) + 15 <= 255){
+                picture(i,j,1) += 15 ;
+            }
+            if(picture(i,j,2) - 20 >= 0){
+                picture(i,j,2) -= 20 ;
+            }
+
+
+        }
+    }
+
+    string new_name;
+    cout << "Enter the new name: ";
+    cin >> new_name;
+  picture.saveImage(new_name);
+
+}
+//////////////////////////////////////////////////////////////////////
+void cold() {
+    cout << "Enter image name + extension: ";
+    string pic_name;
+    cin >> pic_name;
+
+    Image picture;
+    picture.loadNewImage(pic_name);
+
+
+    for(int i = 0; i < picture.width; i++ ) {
+
+        for(int j=0 ; j < picture.height ;j++ ) {
+            if(picture(i,j,0) -25 >= 0 ){
+                picture(i,j,0) -= 25 ;
+            }
+            if(picture(i,j,1) -10 >= 0 ){
+                picture(i,j,1) -= 15;
+            }
+            if(picture(i,j,2) + 30 <= 255){
+                picture(i,j,2) += 30;
+            }
+
+
+        }
+    }
+
+    string new_name;
+    cout << "Enter the new name: ";
+    cin >> new_name;
+    picture.saveImage(new_name);
+
+}
 
 
 int main() {
     return 0;
 }
-
 
 
