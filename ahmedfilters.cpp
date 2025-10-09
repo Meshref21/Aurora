@@ -71,7 +71,7 @@ void Lighten (Image &picture) {
     }
 }
 
-void edge_detecting(Image &image) {
+void Edge_Detecting(Image &image) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             unsigned int avg = 0;
