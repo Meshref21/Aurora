@@ -191,6 +191,7 @@ void Invert_Colors(Image& Picture)
 
 void Rotate_Image(Image& Picture)
 {
+    Local_Label:
     unsigned int option;
     cout << "1.Rotate 90 Degree" << '\n';
     cout << "2.Rotate 180 Degree" << '\n';
@@ -279,51 +280,140 @@ void Rotate_Image(Image& Picture)
             }
         }
     }
+    else
+    {
+        cout << "Enter A Number Between 1 and 3 Try Again!\n";
+        goto Local_Label;
+    }
 }
 
 void Adding_Frame(Image& Picture)
 {
-    // cout << "1. Solid Color Frame\n";
-    // cout << "2. Fancy Frame\n";
-    // int option; cin >> option;
-    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     float ratio = 0.03;
     Image Canva(Picture.width + Picture.width * ratio , Picture.height + Picture.height * ratio);
 
-    // Fill The Empty Canva With White Color
-    for (int i = 0 ; i < Canva.width ; ++i)
-    {
-        for (int j = 0 ; j < Canva.height ; ++j)
-        {
-            for (int k = 0 ; k < Canva.channels ; ++k)
-            {
-                Canva(i , j , k) = 255;
-            }
-        }
-    }
+    Local_Label:
+    cout << "1. Solid Color Frame\n";
+    cout << "2. Fancy Frame\n";
+    int option; cin >> option;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    // Copy Our Photo's Pixels Inside The Solid Color Canva
-    for (int i = ratio * Picture.width ; i < Picture.width ; ++i)
+    int Red = 0 , Green = 0 , Blue = 0;
+
+    if (option == 1)
     {
-        for (int j = ratio * Picture.height ; j < Picture.height ; ++j)
+        cout << "1. White Frame\n";
+        cout << "2. Black Frame\n";
+        cout << "3. Yellowish Gray Frame\n";
+        cout << "4. Claret Frame\n";
+        int value; cin >> value;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (value)
         {
-            for (int k = 0 ; k < Picture.channels ; ++k)
+            case 1:
+                Red = 255 , Green = 255 , Blue = 255;
+                break;
+            case 2:
+                Red = 0 , Green = 0 , Blue = 0;
+                break;
+            case 3:
+                Red = 244 , Green = 210 , Blue = 108;
+                break;
+            case 4:
+                Red = 129 , Green = 19 , Blue = 49;
+                break;
+            default:
+                cout << "Enter A Number Between 1 ~ 4 Try Again!\n";
+                goto Local_Label;
+        }
+
+        // Fill The Empty Canva With White Color
+        for (int i = 0 ; i < Canva.width ; ++i)
+        {
+            for (int j = 0 ; j < Canva.height ; ++j)
             {
-                Canva(i , j , k) = Picture(i , j , k);
+                Canva(i , j , 0) = Red;
+                Canva(i , j , 1) = Green;
+                Canva(i , j , 2) = Blue;
+            }
+        }
+
+    }
+    else if (option == 2)
+    {
+        Red = 255 , Green = 82 , Blue = 82;
+
+        // Fill The Empty Canva With White Color
+        for (int i = 0 ; i < Canva.width ; ++i)
+        {
+            for (int j = 0 ; j < Canva.height ; ++j)
+            {
+                Canva(i , j , 0) = Red;
+                Canva(i , j , 1) = Green;
+                Canva(i , j , 2) = Blue;
+            }
+        }
+
+        Red = 255 , Green = 255 , Blue = 255;
+
+        for (int i = 0 ; i < Canva.width ; i += 5)
+        {
+            for (int j = 0 ; j < Canva.height ; j += 5)
+            {
+                Canva(i , j , 0) = Red;
+                Canva(i , j , 1) = Green;
+                Canva(i , j , 2) = Blue;
+            }
+        }
+
+        Red = 255 , Green = 215 , Blue = 0;
+
+        for (int i = 0 ; i < Canva.width ; i += 2)
+        {
+            for (int j = 0 ; j < Canva.height ; j += 2)
+            {
+                Canva(i , j , 0) = Red;
+                Canva(i , j , 1) = Green;
+                Canva(i , j , 2) = Blue;
             }
         }
     }
-    Picture = Canva;
+    else
+        {
+            cout << "Enter 1 or 2 Try Again!\n";
+            goto Local_Label;
+        }
+
+        // Copy Our Photo's Pixels Inside The Solid Color Canva
+        for (int i = ratio * Picture.width ; i < Picture.width ; ++i)
+        {
+            for (int j = ratio * Picture.height ; j < Picture.height ; ++j)
+            {
+                for (int k = 0 ; k < Picture.channels ; ++k)
+                {
+                    Canva(i , j , k) = Picture(i , j , k);
+                }
+            }
+        }
+        Picture = Canva;
 }
 
 void Blur(Image& Picture)
 {
     Image Canva(Picture.width , Picture.height);
 
+    Local_Label:
     int R;
     cout << "Enter Your Blur Level 1 ~ 5" << '\n';
     cin >> R;
+
+    if (R > 5 || R < 0)
+    {
+        cout << "Please Enter A Number Between 1 And 5\n";
+        goto Local_Label;
+    }
+
 
     int channels = 2;
     int condition = 3;
@@ -420,6 +510,16 @@ void Natural_Sunlight(Image& Picture)
 
 void Oil_Painting(Image& Picture)
 {
+    Local_Label:
+    cout << "Enter The Level Of This Effect 1~3\n";
+    int R; cin >> R;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (R > 3 || R <= 0)
+    {
+        cout << "Try Again!\n";
+        goto Local_Label;
+    }
+
     Image Canva(Picture.width , Picture.height);
 
     for (int i = 0 ; i < Picture.width ; ++i)
@@ -429,7 +529,7 @@ void Oil_Painting(Image& Picture)
             for (int k = 0 ; k < Picture.channels ; ++k)
             {
                 int freq[256] = {0};
-                int R = 2;
+
                 for (int dx = -R ; dx <= R ; ++dx)
                 {
                     for (int dy = -R ; dy <= R ; ++dy)
@@ -457,7 +557,6 @@ void Oil_Painting(Image& Picture)
             }
         }
     }
-
     Picture = Canva;
 }
 
@@ -512,13 +611,6 @@ void Old_Tv(Image& Picture)
 
 void Purple(Image& Picture)
 {
-    // EDITTTTTTTTTTTTTTTT THIS ADD LEVELS =======================
-    cout << "Choose The Level 1~5\n";
-    int option; cin >> option;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    float Delta = (option / 10) + 1;
-    float green_Delta = 1 - Delta;
-
     for (int i = 0 ; i < Picture.width ; ++i)
     {
         for (int j = 0 ; j < Picture.height ; ++j)
