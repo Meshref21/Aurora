@@ -4,9 +4,10 @@
 
 // Mohamed Mahmoud
 // id : 20240526
-// All-A
-// Invert_Colors - Rotate_Image - Adding_Frame - Blur - Oil_Painting - Old_Tv - Purple
- 
+// All-B
+// Invert_Colors - Rotate_Image - Adding_Frame - Blur
+// Oil_Painting - Old_Tv - Purple
+
 // Ahmed Mohamed
 // id : 20240048
 // S5
@@ -15,7 +16,7 @@
 // Saif Mohamed
 // id : 20240263
 // S5
-// Black and White - Flip - Crop - Resize - Skew - Cold - Natural sunlight
+// Black and White - Flip - Crop - Resize - Skew - Cold - Natural_Sunlight
 
 
 #include <algorithm>
@@ -881,43 +882,31 @@ void Flip(Image& Picture) {
     }
 }
 
-void Crop(Image & Picture) {
+void Crop(Image& Picture) {
     int x1,y1,w,h;
-    cout<<"Enter image name + extention\n";
-    string pic_name;
-    cin>>pic_name;
-    Image picture;
-    picture.loadNewImage(pic_name);
     cout<<"Please Enter Starting x: ";
     cin>>x1;
     cout<<"Please Enter Starting y: ";
     cin>>y1;
+    again:
     cout<<"Please Enter The Width You want to crop : ";
     cin>>w;
     cout<<"Please Enter The Height You want to crop : ";
     cin>>h;
     Image cropped (w,h);
-    if(x1>picture.width||y1>picture.height||w+x1>picture.width||h+y1>picture.height) {
+    if(x1>Picture.width||y1>Picture.height||w+x1>Picture.width||h+y1>Picture.height) {
         cout<<"This rectangle is out of range\n";
-        //call load function
+        goto again;
     }
-    else {
-
-        for(int i=0;i<w;i++) {
-            for(int j=0;j<h;j++) {
-                for(int k=0;k<3;k++) {
-                    cropped(i,j,k)=picture(i+x1,j+y1,k);
-                }
+    for(int i=0;i<w;i++) {
+        for(int j=0;j<h;j++) {
+            for(int k=0;k<3;k++) {
+                cropped(i,j,k)=Picture(i+x1,j+y1,k);
             }
         }
-
     }
-    string new_name;
-    cout<<"Enter the new name: \n";
-    cin>>new_name;
-    cropped.saveImage(new_name);
+    Picture = cropped;
 }
-
 void Resize(Image& Picture) {
 
     int x,y;
