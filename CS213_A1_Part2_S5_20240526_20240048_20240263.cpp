@@ -5,9 +5,8 @@
 // Mohamed Mahmoud
 // id : 20240526
 // All-A
-// Invert_Colors - Rotate_Image - Adding_Frame - Blur - Natural_Sunlight
-// Oil_Painting - Old_Tv - Purple
-
+// Invert_Colors - Rotate_Image - Adding_Frame - Blur - Oil_Painting - Old_Tv - Purple
+ 
 // Ahmed Mohamed
 // id : 20240048
 // S5
@@ -16,7 +15,7 @@
 // Saif Mohamed
 // id : 20240263
 // S5
-// Black and White - Flip - Crop - Resize - Skew - Cold
+// Black and White - Flip - Crop - Resize - Skew - Cold - Natural sunlight
 
 
 #include <algorithm>
