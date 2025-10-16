@@ -917,12 +917,14 @@ void Resize(Image& Picture) {
     cin>>y;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     Image resized(x,y);
-
-    for(int i=0;i<resized.width;i++) {
-        for(int j=0;j<resized.height;j++) {
-            for(int k=0;k<3;k++) {
-                int newx = round(i*(Picture.width/x));
-                int newy = round(j*(Picture.height/y));
+    double width_scale = static_cast<double>(Picture.width) / resized.width;
+    double height_scale = static_cast<double>(Picture.height) / resized.height;
+    for(int i = 0; i < resized.width; i++ ) {
+        double newx ,newy;
+        for(int j = 0 ; j < resized.height; j++ ) {
+            for(int k = 0 ; k < 3 ; k++ ) {
+                newx= round(i* width_scale);
+                newy = round(j* height_scale);
                 resized(i,j,k)=Picture(newx,newy,k);
             }
         }
