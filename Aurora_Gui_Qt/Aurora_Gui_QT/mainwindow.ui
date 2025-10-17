@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1535</width>
+    <height>888</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="Invert_Push_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>150</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Invert Colors</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LoadImage_Button">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>10</y>
+      <width>151</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 45, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Load Image</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SaveImage_Button">
+    <property name="geometry">
+     <rect>
+      <x>790</x>
+      <y>10</y>
+      <width>151</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 45, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Save Image</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="GrayScale_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Grayscale</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BlackandWhite_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Black and White</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Flip_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Flip</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Rotate_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Rotate</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DarkenandLighten_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Darken and Lighten</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Crop_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Crop</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Frame_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Frame</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Edge_Detector_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>390</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Edge Detector</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Resize_Button">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>430</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Resize</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Blur_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>310</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Blur</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Natural_Sunlight_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>350</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Natural Sunlight</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="OilPaint_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>390</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Oil Paint</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Oldtv_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>70</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Old Television</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Purple_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>110</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Purple </string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Infrared_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>150</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Infrared</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Skew_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>190</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Skew</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Cold_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>230</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Cold</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="RedDetector_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>270</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Red Detector</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_Image_Display">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>410</y>
+      <width>671</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::Box</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Undo_Button">
+    <property name="geometry">
+     <rect>
+      <x>1010</x>
+      <y>20</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(150, 200, 255);
+font: 9pt &quot;Franklin Gothic&quot;;
+color:rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string>Undo</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="hSlider">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>740</y>
+      <width>261</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="maximum">
+     <number>4</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Orientation::Horizontal</enum>
+    </property>
+    <property name="tickPosition">
+     <enum>QSlider::TickPosition::TicksBelow</enum>
+    </property>
+    <property name="tickInterval">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="Crop_Width">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>460</y>
+      <width>113</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(200, 255, 255);
+font: 9pt &quot;Franklin Gothic&quot;;
+color:rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="Crop_Height">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>490</y>
+      <width>113</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(200, 255, 255);
+font: 9pt &quot;Franklin Gothic&quot;;
+color:rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Crop_Apply_Button">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>520</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Apply</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="Resize_Width">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>460</y>
+      <width>113</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(200, 255, 255);
+font: 9pt &quot;Franklin Gothic&quot;;
+color:rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="Resize_Height">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>490</y>
+      <width>113</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(200, 255, 255);
+font: 9pt &quot;Franklin Gothic&quot;;
+color:rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Resize_Apply_Button">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>520</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Apply</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="Skew_Angle">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>560</y>
+      <width>113</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(200, 255, 255);
+font: 9pt &quot;Franklin Gothic&quot;;
+color:rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Skew_Apply_Button">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>590</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Apply</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Merge_Button">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>430</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(30, 90, 90);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Merge</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_Image_Display_2">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>70</y>
+      <width>671</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::Box</enum>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+    <property name="midLineWidth">
+     <number>0</number>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="Frames_List_menu">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>350</y>
+      <width>121</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Choose</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>White Frame</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Black Frame</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Yellowish Gray</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Claret Frame</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Pointy Yellow</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="Darken_Button">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>270</y>
+      <width>90</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Darken</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Lighten_Button">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>270</y>
+      <width>91</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Lighten</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Rotate90_Button">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>230</y>
+      <width>41</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>90</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Rotate180_Button">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>230</y>
+      <width>41</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>180</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Rotate270_Button">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>230</y>
+      <width>41</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>270</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="FlipVertical_Button">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>190</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Vertical</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Flip_Horizontal_Button">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>190</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(15, 30, 60);
+font: 9pt &quot;Franklin Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Horizontal</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>1400</x>
+      <y>670</y>
+      <width>121</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>C:/Users/GPC/Downloads/aurora_logo_nobg.png</pixmap>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1535</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
